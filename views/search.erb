@@ -1,0 +1,27 @@
+<form action="/search" method="get">
+	<input type="text" name="query" value="<%= params[:query]%>" />
+	<button type="submit" value="submit">Search</button>
+</form>
+
+<h2>Results for '<%= params[:query]%>'</h2>
+
+<% if @results.size == 0 %>
+  <h2>Sorry, no match for '<%= params[:query] %>'</h2>
+<% else %>
+	<ul>
+		<% @results.each do |result|%>
+		  <li>
+		  	<a href="/chapters/<%= result[:number]%>"><%= "#{result[:number]}: " "#{result[:title]}"%></a>
+		  	<ul>
+		  		<% result[:paragraphs].each do |index, paragraph|%>
+		  		  <li>
+		  		  	<a href="/chapters/<%= result[:number] %>#paragraph<%= index %>">
+		  		  		<%= highlight(paragraph, params[:query]) %>
+		  		  	</a>
+		  		  </li>
+		  		<% end %>
+		  	</ul>
+		  </li>
+		 <% end %>
+	</ul>
+<% end %>
